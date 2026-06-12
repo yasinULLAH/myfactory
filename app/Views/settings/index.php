@@ -90,7 +90,7 @@
 
             const formData = new FormData(document.getElementById('settingsForm'));
             $.ajax({
-                url: '/myfactory/public/settings/save',
+                url: <?= json_encode(app_url('/settings/save')) ?>,
                 method: 'POST',
                 data: formData,
                 processData: false,

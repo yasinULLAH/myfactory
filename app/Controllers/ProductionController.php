@@ -6,7 +6,7 @@ use App\Models\Product;
 
 class ProductionController extends Controller {
     public function bom() {
-        $this->checkAuth();
+        $this->checkPermission('Production', 'read');
         $model = new BOM();
         $productModel = new Product();
         $data = [
@@ -18,7 +18,7 @@ class ProductionController extends Controller {
     }
 
     public function saveBOM() {
-        $this->checkAuth();
+        $this->checkPermission('Production', 'create');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->json(['success' => false, 'message' => 'Invalid request'], 405);
         }

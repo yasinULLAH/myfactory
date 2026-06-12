@@ -1,3 +1,4 @@
+<?php $appRoot = rtrim(app_url('/'), '/'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Solve the math</label>
                     <div class="flex gap-4 items-center">
-                        <img src="/myfactory/public/captcha" alt="CAPTCHA" id="captchaImg" class="rounded-xl border border-slate-200 h-12 cursor-pointer" title="Click to refresh">
+                        <img src="<?= htmlspecialchars(app_url('/captcha')) ?>" alt="CAPTCHA" id="captchaImg" class="rounded-xl border border-slate-200 h-12 cursor-pointer" title="Click to refresh">
                         <input type="text" name="captcha" id="captcha" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder="Result">
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                 const formData = new FormData(document.getElementById('loginForm'));
                 
                 $.ajax({
-                    url: '/myfactory/public/login',
+                    url: <?= json_encode(app_url('/login')) ?>,
                     method: 'POST',
                     data: formData,
                     processData: false,
@@ -89,7 +90,7 @@
                                 toast: true,
                                 position: 'top-right'
                             }).then(() => {
-                                window.location.href = '/myfactory/public' + response.redirect;
+                                window.location.href = <?= json_encode($appRoot) ?> + response.redirect;
                             });
                         } else {
                             btn.disabled = false;
@@ -123,7 +124,7 @@
             });
 
         function refreshCaptcha() {
-            document.getElementById('captchaImg').src = '/myfactory/public/captcha?t=' + new Date().getTime();
+            document.getElementById('captchaImg').src = <?= json_encode(app_url('/captcha')) ?> + '?t=' + new Date().getTime();
             document.getElementById('captcha').value = '';
         }
 

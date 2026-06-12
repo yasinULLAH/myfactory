@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <div class="space-y-6">
     <div class="flex justify-between items-center">
         <h3 class="text-xl font-bold">Product Master</h3>
@@ -5,7 +6,7 @@
     </div>
 
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
-        <table class="w-full text-left">
+        <table class="datatable w-full text-left">
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-3 text-sm font-semibold text-gray-600">SKU</th>
@@ -42,3 +43,7 @@
         </table>
     </div>
 </div>
+<?php
+$content = ob_get_clean();
+require_once __DIR__ . '/../layouts/main.php';
+?>

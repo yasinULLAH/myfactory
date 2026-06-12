@@ -5,7 +5,7 @@ use App\Services\BackupService;
 
 class BackupController extends Controller {
     public function index() {
-        $this->checkAuth();
+        $this->checkPermission('Settings', 'read');
         $backupDir = __DIR__ . '/../../storage/backups/';
         $files = array_diff(scandir($backupDir), array('.', '..'));
         $backups = [];
@@ -21,7 +21,7 @@ class BackupController extends Controller {
     }
 
     public function create() {
-        $this->checkAuth();
+        $this->checkPermission('Settings', 'create');
         $result = BackupService::createBackup();
         if ($result) {
             $this->json(['success' => true, 'message' => 'Backup created: ' . $result]);
@@ -31,7 +31,7 @@ class BackupController extends Controller {
     }
 
     public function download() {
-        $this->checkAuth();
+        $this->checkPermission('Settings', 'read');
         $file = $_GET['file'] ?? null;
         $path = __DIR__ . '/../../storage/backups/' . $file;
         if ($file && file_exists($path)) {

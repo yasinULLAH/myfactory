@@ -19,10 +19,18 @@ class Router {
     public function dispatch($uri, $method) {
         $parsedUrl = parse_url($uri);
         $path = $parsedUrl['path'];
-        
-        // Base directories to strip
-        $baseDirs = ['/myfactory/public', '/myfactory'];
-        
+
+        $config = require __DIR__ . '/../../config/app.php';
+        $configuredBasePath = '/' . trim((string) ($config['base_path'] ?? ''), '/');
+        $configuredBasePath = $configuredBasePath === '/' ? '' : $configuredBasePath;
+
+        $baseDirs = array_values(array_unique(array_filter([
+            $configuredBasePath !== '' ? $configuredBasePath . '/public' : '',
+            $configuredBasePath,
+            '/myfactory/public',
+            '/myfactory',
+        ])));
+
         foreach ($baseDirs as $dir) {
             if (strpos($path, $dir) === 0) {
                 $path = substr($path, strlen($dir));

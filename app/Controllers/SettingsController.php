@@ -5,7 +5,7 @@ use App\Models\Settings;
 
 class SettingsController extends Controller {
     public function index() {
-        $this->checkAuth();
+        $this->checkPermission('Settings', 'read');
         $model = new Settings();
         $settings = $model->getByUserId($_SESSION['user_id']);
         $data = ['title' => 'UI Settings', 'settings' => $settings];
@@ -13,7 +13,7 @@ class SettingsController extends Controller {
     }
 
     public function save() {
-        $this->checkAuth();
+        $this->checkPermission('Settings', 'update');
         $data = [
             'font_family' => $_POST['font_family'],
             'font_size' => $_POST['font_size'],

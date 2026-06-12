@@ -13,8 +13,7 @@ class Controller {
     }
     
     protected function redirect($url) {
-        $config = require __DIR__ . '/../../config/app.php';
-        header('Location: ' . $config['base_url'] . $url);
+        header('Location: ' . app_url($url));
         exit;
     }
 

@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <div x-data="{ tab: 'users' }" class="bg-white rounded-lg shadow-sm border border-gray-200">
     <div class="border-b border-gray-200 px-6 py-3 flex space-x-6">
         <button @click="tab = 'users'" :class="tab === 'users' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'" class="border-b-2 py-2 font-medium text-sm transition-colors">Users</button>
@@ -210,7 +211,7 @@ function closeUserModal() {
 }
 
 function editUser(id) {
-    $.get('/myfactory/public/users/get?id=' + id, function(data) {
+    $.get(<?= json_encode(app_url('/users/get')) ?> + '?id=' + id, function(data) {
         if(data.error) {
             Swal.fire('Error', data.error, 'error');
             return;
@@ -232,7 +233,7 @@ function editUser(id) {
 
 $('#userForm').on('submit', function(e) {
     e.preventDefault();
-    $.post('/myfactory/public/users/save', $(this).serialize(), function(res) {
+    $.post(<?= json_encode(app_url('/users/save')) ?>, $(this).serialize(), function(res) {
         if(res.success) {
             location.reload();
         } else {
@@ -253,7 +254,7 @@ function deleteUser(id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            $.post('/myfactory/public/users/delete', {id: id}, function(res) {
+            $.post(<?= json_encode(app_url('/users/delete')) ?>, {id: id}, function(res) {
                 if(res.success) location.reload();
                 else Swal.fire('Error', res.message || 'Delete failed', 'error');
             });
@@ -274,7 +275,7 @@ function closeRoleModal() {
 }
 
 function editRole(id) {
-    $.get('/myfactory/public/roles/get?id=' + id, function(data) {
+    $.get(<?= json_encode(app_url('/roles/get')) ?> + '?id=' + id, function(data) {
         if(data.error) {
             Swal.fire('Error', data.error, 'error');
             return;
@@ -304,7 +305,7 @@ function editRole(id) {
 
 $('#roleForm').on('submit', function(e) {
     e.preventDefault();
-    $.post('/myfactory/public/roles/save', $(this).serialize(), function(res) {
+    $.post(<?= json_encode(app_url('/roles/save')) ?>, $(this).serialize(), function(res) {
         if(res.success) {
             location.reload();
         } else {
@@ -325,7 +326,7 @@ function deleteRole(id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            $.post('/myfactory/public/roles/delete', {id: id}, function(res) {
+            $.post(<?= json_encode(app_url('/roles/delete')) ?>, {id: id}, function(res) {
                 if(res.success) location.reload();
                 else Swal.fire('Error', res.message || 'Delete failed', 'error');
             });
@@ -333,3 +334,7 @@ function deleteRole(id) {
     });
 }
 </script>
+<?php
+$content = ob_get_clean();
+require_once __DIR__ . '/../layouts/main.php';
+?>

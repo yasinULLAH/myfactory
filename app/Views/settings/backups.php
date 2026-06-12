@@ -25,7 +25,7 @@
                         <td class="py-4 text-gray-600"><?= $b['size'] ?></td>
                         <td class="py-4 text-gray-600"><?= $b['date'] ?></td>
                         <td class="py-4 flex gap-2">
-                            <a href="/myfactory/public/settings/backups/download?file=<?= urlencode($b['filename']) ?>" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Download">
+                            <a href="<?= htmlspecialchars(app_url('/settings/backups/download')) ?>?file=<?= urlencode($b['filename']) ?>" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Download">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                             </a>
                         </td>
@@ -45,7 +45,7 @@
             const btn = $(this);
             btn.prop('disabled', true).text('Processing...');
             
-            $.post('/myfactory/public/settings/backups/create', function(res) {
+            $.post(<?= json_encode(app_url('/settings/backups/create')) ?>, function(res) {
                 btn.prop('disabled', false).html('<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Create Manual Backup');
                 if (res.success) {
                     Swal.fire({ icon: 'success', title: 'Backup Successful', text: res.message, toast: true, position: 'top-right', timer: 3000, showConfirmButton: false }).then(() => {

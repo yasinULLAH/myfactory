@@ -45,7 +45,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
             <h3 class="text-lg font-semibold text-gray-800">Recent Purchase Orders</h3>
-            <a href="/myfactory/public/procurement/create" class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg shadow-sm flex items-center gap-2 hover:bg-blue-700 transition-colors">
+            <a href="<?= htmlspecialchars(app_url('/procurement/create')) ?>" class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg shadow-sm flex items-center gap-2 hover:bg-blue-700 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 New PO
             </a>

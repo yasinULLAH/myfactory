@@ -106,7 +106,7 @@
         document.getElementById('factoryModal').classList.remove('hidden');
         if (id) {
             document.getElementById('modalTitle').innerText = 'Edit Factory';
-            fetch('/myfactory/public/master/factories/get?id=' + id)
+            fetch(<?= json_encode(app_url('/master/factories/get')) ?> + '?id=' + id)
                 .then(res => res.json())
                 .then(res => {
                     if (res.success) {
@@ -127,7 +127,7 @@
     function saveFactory() {
         const formData = new FormData(document.getElementById('factoryForm'));
         $.ajax({
-            url: '/myfactory/public/master/factories/save',
+            url: <?= json_encode(app_url('/master/factories/save')) ?>,
             method: 'POST',
             data: formData,
             processData: false,
@@ -159,7 +159,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                $.post('/myfactory/public/master/factories/delete', { id: id }, function(res) {
+                $.post(<?= json_encode(app_url('/master/factories/delete')) ?>, { id: id }, function(res) {
                     if (res.success) {
                         Swal.fire({ icon: 'success', title: 'Deleted!', text: res.message, toast: true, position: 'top-right', timer: 3000, showConfirmButton: false });
                         location.reload();

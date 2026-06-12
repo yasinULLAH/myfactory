@@ -40,10 +40,10 @@ class UserController extends Controller {
     }
     
     public function saveUser() {
-        $this->checkPermission('User Management', 'update'); // create or update
+        $id = $_POST['id'] ?? '';
+        $this->checkPermission('User Management', $id ? 'update' : 'create');
         $db = Database::getInstance()->getConnection();
         
-        $id = $_POST['id'] ?? '';
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $full_name = trim($_POST['full_name'] ?? '');
@@ -112,10 +112,10 @@ class UserController extends Controller {
     }
     
     public function saveRole() {
-        $this->checkPermission('User Management', 'update');
+        $id = $_POST['id'] ?? '';
+        $this->checkPermission('User Management', $id ? 'update' : 'create');
         $db = Database::getInstance()->getConnection();
         
-        $id = $_POST['id'] ?? '';
         $name = trim($_POST['name'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $permissions = $_POST['permissions'] ?? []; // JSON string or array

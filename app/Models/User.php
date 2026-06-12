@@ -21,25 +21,66 @@ class User extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function hasPermission($userId, $module, $action = 'read') {
+    public static function getAccessProfile($userId) {
         $db = \App\Core\Database::getInstance()->getConnection();
-        $stmt = $db->prepare("SELECT role_id FROM users WHERE id = ? LIMIT 1");
+        $stmt = $db->prepare("
+            SELECT u.role_id, u.role, r.name AS role_name
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE u.id = ?
+            LIMIT 1
+        ");
         $stmt->execute([$userId]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$user || !$user['role_id']) return false;
-        
-        $roleId = $user['role_id'];
-        
-        // Super Admin (ID 1) check is usually done via role name, but we can do it via DB permissions
-        // Or hardcode ID 1:
-        if ($roleId == 1) return true;
-        
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public static function isSuperAdmin($userId) {
+        $profile = self::getAccessProfile($userId);
+
+        if (!$profile) {
+            return false;
+        }
+
+        if ((int) ($profile['role_id'] ?? 0) === 1) {
+            return true;
+        }
+
+        $roleTokens = array_map(
+            static fn ($value) => strtolower(trim((string) $value)),
+            [$profile['role'] ?? '', $profile['role_name'] ?? '']
+        );
+
+        foreach ($roleTokens as $token) {
+            if (in_array($token, ['super admin', 'superadmin', 'admin'], true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function hasPermission($userId, $module, $action = 'read') {
+        $profile = self::getAccessProfile($userId);
+
+        if (!$profile) {
+            return false;
+        }
+
+        if (self::isSuperAdmin($userId)) {
+            return true;
+        }
+
+        $roleId = (int) ($profile['role_id'] ?? 0);
+        if ($roleId === 0) {
+            return false;
+        }
+
         $column = 'can_' . $action;
         if (!in_array($column, ['can_create', 'can_read', 'can_update', 'can_delete'])) {
             return false;
         }
 
+        $db = \App\Core\Database::getInstance()->getConnection();
         $stmt = $db->prepare("SELECT $column FROM role_permissions WHERE role_id = ? AND module = ? LIMIT 1");
         $stmt->execute([$roleId, $module]);
         $perm = $stmt->fetchColumn();

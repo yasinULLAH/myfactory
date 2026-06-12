@@ -9,14 +9,14 @@ class MasterDataController extends Controller {
     
     // --- Factories ---
     public function factories() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'read');
         $model = new Factory();
         $data = ['title' => 'Factories', 'factories' => $model->getAll()];
         $this->view('master/factories', $data);
     }
 
     public function getFactory() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'read');
         $id = $_GET['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Factory();
@@ -29,8 +29,8 @@ class MasterDataController extends Controller {
     }
 
     public function saveFactory() {
-        $this->checkAuth();
         $id = $_POST['id'] ?? null;
+        $this->checkPermission('Master Data', $id ? 'update' : 'create');
         $data = [
             'name' => $_POST['name'],
             'location' => $_POST['location'],
@@ -54,7 +54,7 @@ class MasterDataController extends Controller {
     }
 
     public function deleteFactory() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'delete');
         $id = $_POST['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Factory();
@@ -67,14 +67,14 @@ class MasterDataController extends Controller {
 
     // --- Products ---
     public function products() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'read');
         $model = new Product();
         $data = ['title' => 'Products', 'products' => $model->getAll()];
         $this->view('master/products', $data);
     }
 
     public function getProduct() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'read');
         $id = $_GET['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Product();
@@ -87,8 +87,8 @@ class MasterDataController extends Controller {
     }
 
     public function saveProduct() {
-        $this->checkAuth();
         $id = $_POST['id'] ?? null;
+        $this->checkPermission('Master Data', $id ? 'update' : 'create');
         $data = [
             'sku' => $_POST['sku'],
             'name' => $_POST['name'],
@@ -114,7 +114,7 @@ class MasterDataController extends Controller {
     }
 
     public function deleteProduct() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'delete');
         $id = $_POST['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Product();
@@ -127,14 +127,14 @@ class MasterDataController extends Controller {
 
     // --- Suppliers ---
     public function suppliers() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'read');
         $model = new Supplier();
         $data = ['title' => 'Suppliers', 'suppliers' => $model->getAll()];
         $this->view('master/suppliers', $data);
     }
 
     public function getSupplier() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'read');
         $id = $_GET['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Supplier();
@@ -147,8 +147,8 @@ class MasterDataController extends Controller {
     }
 
     public function saveSupplier() {
-        $this->checkAuth();
         $id = $_POST['id'] ?? null;
+        $this->checkPermission('Master Data', $id ? 'update' : 'create');
         $data = [
             'name' => $_POST['name'],
             'email' => $_POST['email'],
@@ -173,7 +173,7 @@ class MasterDataController extends Controller {
     }
 
     public function deleteSupplier() {
-        $this->checkAuth();
+        $this->checkPermission('Master Data', 'delete');
         $id = $_POST['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Supplier();

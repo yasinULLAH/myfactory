@@ -10,7 +10,7 @@ class InventoryController extends Controller {
     
     // --- Warehouses ---
     public function warehouses() {
-        $this->checkAuth();
+        $this->checkPermission('Inventory', 'read');
         $model = new Warehouse();
         $factoryModel = new Factory();
         $data = [
@@ -22,7 +22,7 @@ class InventoryController extends Controller {
     }
 
     public function getWarehouse() {
-        $this->checkAuth();
+        $this->checkPermission('Inventory', 'read');
         $id = $_GET['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Warehouse();
@@ -35,8 +35,8 @@ class InventoryController extends Controller {
     }
 
     public function saveWarehouse() {
-        $this->checkAuth();
         $id = $_POST['id'] ?? null;
+        $this->checkPermission('Inventory', $id ? 'update' : 'create');
         $data = [
             'factory_id' => $_POST['factory_id'],
             'name' => $_POST['name'],
@@ -59,7 +59,7 @@ class InventoryController extends Controller {
     }
 
     public function deleteWarehouse() {
-        $this->checkAuth();
+        $this->checkPermission('Inventory', 'delete');
         $id = $_POST['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Warehouse();
@@ -72,7 +72,7 @@ class InventoryController extends Controller {
 
     // --- Stock ---
     public function stock() {
-        $this->checkAuth();
+        $this->checkPermission('Inventory', 'read');
         $model = new Stock();
         $warehouseModel = new Warehouse();
         $productModel = new Product();
@@ -86,7 +86,7 @@ class InventoryController extends Controller {
     }
 
     public function getStock() {
-        $this->checkAuth();
+        $this->checkPermission('Inventory', 'read');
         $id = $_GET['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Stock();
@@ -99,8 +99,8 @@ class InventoryController extends Controller {
     }
 
     public function saveStock() {
-        $this->checkAuth();
         $id = $_POST['id'] ?? null;
+        $this->checkPermission('Inventory', $id ? 'update' : 'create');
         $data = [
             'warehouse_id' => $_POST['warehouse_id'],
             'product_id' => $_POST['product_id'],
@@ -125,7 +125,7 @@ class InventoryController extends Controller {
     }
 
     public function deleteStock() {
-        $this->checkAuth();
+        $this->checkPermission('Inventory', 'delete');
         $id = $_POST['id'] ?? null;
         if (!$id) $this->json(['success' => false, 'message' => 'ID missing'], 400);
         $model = new Stock();

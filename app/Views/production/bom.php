@@ -138,7 +138,7 @@
                 
                 const formData = new FormData(document.getElementById('bomForm'));
                 $.ajax({
-                    url: '/myfactory/public/production/bom/save',
+                    url: <?= json_encode(app_url('/production/bom/save')) ?>,
                     method: 'POST',
                     data: formData,
                     processData: false,

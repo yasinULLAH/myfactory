@@ -3,7 +3,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
             <h3 class="text-lg font-semibold text-gray-800">Create New Purchase Order</h3>
-            <a href="/myfactory/public/procurement" class="text-sm text-gray-500 hover:text-gray-700 underline">Back to List</a>
+            <a href="<?= htmlspecialchars(app_url('/procurement')) ?>" class="text-sm text-gray-500 hover:text-gray-700 underline">Back to List</a>
         </div>
         <form id="poForm" class="p-8 space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -60,7 +60,7 @@
                     Total: <span id="totalDisplay" class="text-blue-600">$0.00</span>
                 </div>
                 <div class="flex gap-3">
-                    <a href="/myfactory/public/procurement" class="px-6 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-all">Cancel</a>
+                    <a href="<?= htmlspecialchars(app_url('/procurement')) ?>" class="px-6 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-all">Cancel</a>
                     <button type="submit" id="saveBtn" class="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all">
                         Create Purchase Order
                     </button>
@@ -122,7 +122,7 @@
                 
                 const formData = new FormData(document.getElementById('poForm'));
                 $.ajax({
-                    url: '/myfactory/public/procurement/store',
+                    url: <?= json_encode(app_url('/procurement/store')) ?>,
                     method: 'POST',
                     data: formData,
                     processData: false,
@@ -130,7 +130,7 @@
                     success: function(res) {
                         if (res.success) {
                             Swal.fire({ icon: 'success', title: 'Success', text: res.message, toast: true, position: 'top-right', timer: 3000, showConfirmButton: false }).then(() => {
-                                window.location.href = '/myfactory/public' + res.redirect;
+                                window.location.href = <?= json_encode(rtrim(app_url('/'), '/')) ?> + res.redirect;
                             });
                         } else {
                             btn.prop('disabled', false).text('Create Purchase Order');

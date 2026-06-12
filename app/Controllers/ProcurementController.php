@@ -7,14 +7,14 @@ use App\Models\Product;
 
 class ProcurementController extends Controller {
     public function index() {
-        $this->checkAuth();
+        $this->checkPermission('Procurement', 'read');
         $model = new PurchaseOrder();
         $data = ['title' => 'Purchase Orders', 'orders' => $model->getAll()];
         $this->view('procurement/index', $data);
     }
 
     public function create() {
-        $this->checkAuth();
+        $this->checkPermission('Procurement', 'create');
         $supplierModel = new Supplier();
         $productModel = new Product();
         $data = [
@@ -26,7 +26,7 @@ class ProcurementController extends Controller {
     }
 
     public function store() {
-        $this->checkAuth();
+        $this->checkPermission('Procurement', 'create');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->json(['success' => false, 'message' => 'Invalid request'], 405);
         }
@@ -62,7 +62,7 @@ class ProcurementController extends Controller {
     }
 
     public function viewOrder() {
-        $this->checkAuth();
+        $this->checkPermission('Procurement', 'read');
         $id = $_GET['id'] ?? null;
         $model = new PurchaseOrder();
         $order = $model->getById($id);
