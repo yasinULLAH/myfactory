@@ -1,0 +1,1 @@
+<?php ob_start(); ?><div class='p-6 bg-white rounded-xl shadow-sm'><h3>Reports & Analytics</h3><p>Select a report to generate (Production, Inventory, Procurement, etc.).</p></div><?php $content = ob_get_clean(); require_once __DIR__ . '/../layouts/main.php'; ?>

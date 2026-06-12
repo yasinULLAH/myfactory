@@ -1,0 +1,25 @@
+# File: /.htaccess
+Options +FollowSymLinks -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /myfactory/
+    
+    # Redirect empty requests to public/
+    RewriteRule ^$ public/ [L]
+    
+    # If the file exists in public/, serve it
+    RewriteCond %{DOCUMENT_ROOT}/myfactory/public/$1 -f
+    RewriteRule ^(.*)$ public/$1 [L]
+    
+    # Otherwise, pass to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+<Files "config.php">
+    Order Allow,Deny
+    Deny from all
+</Files>

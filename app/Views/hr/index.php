@@ -1,0 +1,1 @@
+<?php ob_start(); ?><div class='p-6 bg-white rounded-xl shadow-sm'><h3>HR & Attendance</h3><p>Module scaffolding complete.</p></div><?php $content = ob_get_clean(); require_once __DIR__ . '/../layouts/main.php'; ?>
